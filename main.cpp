@@ -4,7 +4,7 @@ using namespace std;
 using namespace cv;
 
 #define LOCAL
-
+// hello a
 void GetSignal(Mat img) {
     cvtColor(img, img, COLOR_BGR2GRAY);
     vector<vector<int>> contours;

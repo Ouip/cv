@@ -15,6 +15,7 @@ using namespace cv;
 class Signal {
    public:
     Mat Image;
+    typedef vector<Point> vecPoint;
     Signal(string image_path) {
         _img = imread(image_path);
         Image = _img.clone();
@@ -42,10 +43,10 @@ class Signal {
         inRange(img, YellowL, YellowH, mask[2]);
     }
 
-    vector<Point> DrawBound() {
-        vector<Point> result;
+    vecPoint DrawBound() {
+        vecPoint result;
         for (int i = 0; i < 3; ++i) {
-            vector<vector<Point>> contours;
+            vector<vecPoint> contours;
             findContours(mask[i], contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
 
             for (auto& s : contours) {
@@ -59,17 +60,18 @@ class Signal {
                 result.emplace_back(boundRect.tl());
                 result.emplace_back(boundRect.br());
             }
+            vector<vecPoint>().swap(contours);  // release
         }
         return result;
     }
 
-    void Printer(vector<Point> v) {
+    void Printer(vecPoint v) {
         for (int i = 0; i < v.size(); ++i) {
             cout << v[i].x << " " << v[i].y << " ";
             if (!(i + 1 % 2))
                 cout << endl;
         }
-        vector<Point>(v).swap(v);  // release vector
+        vecPoint().swap(v);  // release vector
     }
 
    protected:

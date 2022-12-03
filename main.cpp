@@ -15,7 +15,7 @@ using namespace cv;
 class Signal {
    public:
     Mat Image;
-    typedef vector<Point> vecPoint;
+    using vecPoint = vector<Point>;
     Signal(string image_path) {
         _img = imread(image_path);
         Image = _img.clone();
@@ -66,11 +66,14 @@ class Signal {
     }
 
     void Printer(vecPoint v) {
-        for (int i = 0; i < v.size(); ++i) {
+        for (int i = 0; i < v.size();) {
             cout << v[i].x << " " << v[i].y << " ";
-            if (!(i + 1 % 2))
+            if (!(++i % 2))
                 cout << endl;
         }
+#ifdef LOCAL
+        cout << "+-----------+" << endl;
+#endif
         vecPoint().swap(v);  // release vector
     }
 
